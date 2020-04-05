@@ -1,0 +1,64 @@
+<p>
+  Rank objectives where you feel the NBBA should focus it's efforts. Move an objective to the Priority objectives list, then move the priority items up or down to indicate what you think is most important.
+</p>
+<div class="listbox-area">
+  <div class="left-area">
+    <span id="ss_imp_l" class="listbox-label">
+      Available Objectives
+    </span>
+    <ul id="ss_imp_list"
+        tabindex="0"
+        role="listbox"
+        aria-labelledby="ss_imp_l">
+    </ul>
+    <div role="toolbar"
+         aria-label="Actions"
+         class="toolbar">
+      <button type="button"
+              id="ex1-up"
+              class="toolbar-item selected"
+              aria-keyshortcuts="Control+ArrowUp"
+              aria-disabled="true">
+        Up
+      </button>
+      <button type="button"
+              id="ex1-down"
+              class="toolbar-item"
+              tabindex="-1"
+              aria-keyshortcuts="Control+ArrowDown"
+              aria-disabled="true">
+        Down
+      </button>
+      <button type="button"
+              id="ex1-delete"
+              class="toolbar-item move-right-btn"
+              tabindex="-1"
+              aria-keyshortcuts="Control+ArrowRight Enter"
+              aria-disabled="true">
+        Make Priority
+      </button>
+    </div>
+  </div>
+  <div class="right-area">
+    <span id="ss_unimp_l" class="listbox-label">
+      Priority Objectives
+    </span>
+    <ul id="ss_unimp_list"
+        tabindex="0"
+        role="listbox"
+        aria-labelledby="ss_unimp_l"
+        aria-activedescendant="">
+    </ul>
+    <button type="button"
+            id="ex1-add"
+            class="move-left-btn"
+            aria-keyshortcuts="Control+ArrowLeft Delete"
+            aria-disabled="true">
+      Deprioritize
+    </button>
+  </div>
+  <div class="offscreen">
+    Last change:
+    <span aria-live="polite" id="ss_live_region"></span>
+  </div>
+</div>

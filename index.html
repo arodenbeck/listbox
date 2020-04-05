@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Listbox Example</title>
+
+    <!-- <link
+      href="https://fonts.googleapis.com/css?family=Roboto:400,700"
+      rel="stylesheet"
+    /> -->
+    <!-- <link rel="stylesheet" href="css/normalize.css" /> -->
+    <!-- <link rel="stylesheet" href="css/reset.css" /> -->
+    <link rel="stylesheet" href="css/listbox.css" />
+  </head>
+
+  <body>
+    <main>
+      <h1>Multi Selectable, Moveable listbox</h1>
+      <p>
+        Rank objectives where you feel the NBBA should focus it's efforts. Move an objective to the Priority objectives list, then move the priority items up or down to indicate what you think is most important.
+      </p>
+      <div class="listbox-area">
+        <div class="left-area">
+          <span id="available-priorities-l" class="listbox-label">
+            Available Priorities
+          </span>
+          <ul id="available-priorities"
+              tabindex="0"
+              role="listbox"
+              aria-labelledby="available-priorities-l">
+          </ul>
+          <div role="toolbar"
+               aria-label="Actions"
+               id="toolbar-buttons"
+               class="toolbar">
+            <button type="button"
+                    id="ex1-up"
+                    class="toolbar-item selected"
+                    aria-keyshortcuts="Control+ArrowUp"
+                    aria-disabled="true">
+              Up
+            </button>
+            <button type="button"
+                    id="ex1-down"
+                    class="toolbar-item"
+                    tabindex="-1"
+                    aria-keyshortcuts="Control+ArrowDown"
+                    aria-disabled="true">
+              Down
+            </button>
+            <button type="button"
+                    id="make-priority"
+                    class="toolbar-item move-right-btn"
+                    tabindex="-1"
+                    aria-keyshortcuts="Control+ArrowRight Enter"
+                    aria-disabled="true">
+              Make Priority
+            </button>
+          </div>
+        </div>
+        <div class="right-area">
+          <span id="priority-label" class="listbox-label">
+            Priority Objectives
+          </span>
+          <ul id="priority-objectives"
+              tabindex="0"
+              role="listbox"
+              aria-labelledby="priority-label"
+              aria-activedescendant="">
+          </ul>
+          <button type="button"
+                  id="deprioritize"
+                  class="move-left-btn"
+                  aria-keyshortcuts="Control+ArrowLeft Delete"
+                  aria-disabled="true">
+            Deprioritize
+          </button>
+        </div>
+        <div class="offscreen">
+          Last change:
+          <span aria-live="polite" id="ss_live_region"></span>
+        </div>
+      </div>
+    </main>
+
+
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script> -->
+    <script src="js/utils.js"></script>
+    <script src="js/listbox.js"></script>
+    <script src="js/toolbar.js"></script>
+    <script type="text/javascript" >
+      var listbox = new aria.Listbox(document.getElementById('available-priorities'));
+      var prioritizedListbox = new aria.Listbox(document.getElementById('priority-objectives'));
+      var toolbarButtons = new aria.Toolbar(document.getElementById('toolbar-buttons'));
+      var upButton = document.getElementById('ex1-up');
+      var downButton = document.getElementById('ex1-down');
+      var moveButton = document.getElementById('make-priority');
+      var delButton = document.getElementById('deprioritize');
+      var testItems = [
+      'Organization and Execution of the World Series ',
+      'International Outreach/Expansion of Beep Baseball',
+      'National Outreach/Expansion of Beep Baseball',
+      'Knowledge support for New Teams',
+      'Knowledge support for Existing Teams',
+      'Financial Assistance for Teams',
+      'Media Coverage',
+      'Recruitment of Players for existing teams',
+      'Recruitment of Volunteers for existing teams',
+      'Recruitment of Volunteers for NBBA ',
+      'Introduction and Education of Youth on Beep Baseball',
+      'Equipment Innovation/Sustainability',
+      'Financial Stability & Sustainability']
+
+      listbox.createListItems(testItems);
+      listbox.setupMove(moveButton, prioritizedListbox);
+      prioritizedListbox.enableMoveUpDown(upButton, downButton);
+      prioritizedListbox.setupMove(delButton, listbox);
+    </script>
+  </body>
+</html>
