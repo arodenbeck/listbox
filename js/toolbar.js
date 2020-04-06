@@ -47,20 +47,15 @@ aria.Toolbar.prototype.checkFocusChange = function (evt) {
   switch (key) {
     case aria.KeyCode.LEFT:
     case aria.KeyCode.RIGHT:
-      nextIndex = Array.prototype.indexOf.call(this.items, this.selectedItem);
-      nextIndex = key === aria.KeyCode.LEFT ? nextIndex - 1 : nextIndex + 1;
+        case aria.KeyCode.UP:
+            case aria.KeyCode.DOWN:
+                nextIndex = Array.prototype.indexOf.call(this.items, this.selectedItem);
+      nextIndex = (key === aria.KeyCode.LEFT || key === aria.KeyCode.UP) ? nextIndex - 1 : nextIndex + 1;
       nextIndex = Math.max(Math.min(nextIndex, this.items.length - 1), 0);
 
       nextItem = this.items[nextIndex];
       this.selectItem(nextItem);
       this.focusItem(nextItem);
-      break;
-    case aria.KeyCode.DOWN:
-      // if selected item is menu button, pressing DOWN should act like a click
-      if (aria.Utils.hasClass(this.selectedItem, 'menu-button')) {
-        evt.preventDefault();
-        this.selectedItem.click();
-      }
       break;
   }
 };

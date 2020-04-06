@@ -35,6 +35,7 @@
           <div role="toolbar"
                aria-label="Actions"
                id="toolbar-buttons"
+               aria-orientation="horizontal"
                class="toolbar">
             <button type="button"
                     id="ex1-up"
@@ -51,33 +52,7 @@
                     aria-disabled="true">
               Down
             </button>
-            <button type="button"
-                    id="make-priority"
-                    class="toolbar-item move-right-btn"
-                    tabindex="-1"
-                    aria-keyshortcuts="Control+ArrowRight Enter"
-                    aria-disabled="true">
-              Make Priority
-            </button>
           </div>
-        </div>
-        <div class="right-area">
-          <span id="priority-label" class="listbox-label">
-            Priority Objectives
-          </span>
-          <ul id="priority-objectives"
-              tabindex="0"
-              role="listbox"
-              aria-labelledby="priority-label"
-              aria-activedescendant="">
-          </ul>
-          <button type="button"
-                  id="deprioritize"
-                  class="move-left-btn"
-                  aria-keyshortcuts="Control+ArrowLeft Delete"
-                  aria-disabled="true">
-            Deprioritize
-          </button>
         </div>
         <div class="offscreen">
           Last change:
@@ -94,12 +69,12 @@
     <script src="js/toolbar.js"></script>
     <script type="text/javascript" >
       var listbox = new aria.Listbox(document.getElementById('available-priorities'));
-      var prioritizedListbox = new aria.Listbox(document.getElementById('priority-objectives'));
+      //var prioritizedListbox = new aria.Listbox(document.getElementById('priority-objectives'));
       var toolbarButtons = new aria.Toolbar(document.getElementById('toolbar-buttons'));
       var upButton = document.getElementById('ex1-up');
       var downButton = document.getElementById('ex1-down');
-      var moveButton = document.getElementById('make-priority');
-      var delButton = document.getElementById('deprioritize');
+      //var moveButton = document.getElementById('make-priority');
+      //var delButton = document.getElementById('deprioritize');
       var testItems = [
       'Organization and Execution of the World Series ',
       'International Outreach/Expansion of Beep Baseball',
@@ -116,9 +91,7 @@
       'Financial Stability & Sustainability']
 
       listbox.createListItems(testItems);
-      listbox.setupMove(moveButton, prioritizedListbox);
-      prioritizedListbox.enableMoveUpDown(upButton, downButton);
-      prioritizedListbox.setupMove(delButton, listbox);
+      listbox.enableMoveUpDown(upButton, downButton);
     </script>
   </body>
 </html>
