@@ -472,6 +472,8 @@ aria.Listbox.prototype.createListItems = function (items) {
     listItem.innerText = item;
     listItem.setAttribute('id', uniqueId);
     listItem.setAttribute('role', 'option');
+    listItem.setAttribute('aria-checked', 'true');
+    listItem.setAttribute('aria-selected', 'true');
     listItems.push(listItem);
   }).bind(this));
   this.addItems(listItems);
