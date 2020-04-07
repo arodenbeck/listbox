@@ -315,6 +315,10 @@ aria.Listbox.prototype.toggleSelectItem = function (element) {
     element.setAttribute(
       'aria-selected',
       element.getAttribute('aria-selected') === 'true' ? 'false' : 'true'
+      );
+    element.setAttribute(
+        'aria-checked',
+        element.getAttribute('aria-checked') === 'true' ? 'false' : 'true'
     );
 
     if (this.moveButton) {
