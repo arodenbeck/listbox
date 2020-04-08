@@ -5,8 +5,8 @@
 /**
  * @namespace aria
  */
-var aria = aria || {};
-
+import * as ariaToolbar from '/js/toolbar.js';
+var aria = ariaToolbar.aria || {};
 /**
  * @constructor
  *
@@ -623,3 +623,76 @@ aria.Listbox.prototype.setHandleItemChange = function (handlerFn) {
 aria.Listbox.prototype.setHandleFocusChange = function (focusChangeHandler) {
   this.handleFocusChange = focusChangeHandler;
 };
+var listboxTemplate = document.createElement('template');
+listboxTemplate.innerHTML = `<h1>Rank these options</h1>
+  <p>
+    Rank objectives where you feel the NBBA should focus it's efforts. Select up to 6 objectives, then move the priority items up or down to indicate what you think is most important.
+  </p>
+  <div class="listbox-area">
+    <div class="left-area">
+      <span id="available-priorities-l" class="listbox-label">
+        Available Priorities
+      </span>
+      <ul id="available-priorities"
+        aria-multiselectable="true"
+        tabindex="0"
+        role="listbox"
+        aria-labelledby="available-priorities-l">
+      </ul>
+      <div role="toolbar"
+         aria-label="Actions"
+         id="toolbar-buttons"
+         aria-orientation="horizontal"
+         class="toolbar">
+        <button type="button"
+              id="ex1-up"
+              class="toolbar-item selected"
+              aria-keyshortcuts="Control+ArrowUp"
+              aria-disabled="true">
+          Up
+        </button>
+        <button type="button"
+              id="ex1-down"
+              class="toolbar-item"
+              tabindex="-1"
+              aria-keyshortcuts="Control+ArrowDown"
+              aria-disabled="true">
+          Down
+        </button>
+      </div>
+    </div>
+    <div class="offscreen">
+      Last change:
+      <span aria-live="polite" id="ss_live_region"></span>
+    </div>
+  </div>`;
+class RankingListbox extends HTMLElement {
+  constructor() {
+    super();
+    this.appendChild(listboxTemplate.content.cloneNode(true));
+  }  // End constructor
+  connectedCallback() {
+    var listbox = new aria.Listbox(this.querySelector('[role="listbox"]'));
+    //var toolbarButtons = new aria.Toolbar(this.querySelector('[role="toolbar"]'));
+    var upButton = this.querySelector('[id="ex1-up"]');
+    var downButton = this.querySelector('[id="ex1-down"]');
+    var testItems = [
+      'Organization and Execution of the World Series ',
+      'International Outreach/Expansion of Beep Baseball',
+      'National Outreach/Expansion of Beep Baseball',
+      'Knowledge support for New Teams',
+      'Knowledge support for Existing Teams',
+      'Financial Assistance for Teams',
+      'Media Coverage',
+      'Recruitment of Players for existing teams',
+      'Recruitment of Volunteers for existing teams',
+      'Recruitment of Volunteers for NBBA ',
+      'Introduction and Education of Youth on Beep Baseball',
+      'Equipment Innovation/Sustainability',
+      'Financial Stability & Sustainability']
+
+    listbox.createListItems(testItems);
+    listbox.enableMoveUpDown(upButton, downButton);
+  }  // End connectedCallback method
+}  // End rankingListbox class
+window.customElements.define('ranking-listbox', RankingListbox);
