@@ -5,7 +5,7 @@
 /**
  * @namespace aria
  */
-import * as ariaUtils from '/js/utils.js';
+import { ariaUtils } from '/js/utils.js';
 var aria = ariaUtils.aria || {};
 
 /**
@@ -112,4 +112,4 @@ aria.Toolbar.prototype.selectItem = function (element) {
 aria.Toolbar.prototype.focusItem = function (element) {
   element.focus();
 };
-//export { aria };
+export { aria as ariaToolbar };

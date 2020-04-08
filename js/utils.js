@@ -127,4 +127,4 @@ aria.Utils.bindMethods = function (object /* , ...methodNames */) {
     object[method] = object[method].bind(object);
   });
 };
-//export { aria };
+export { aria as ariaUtils };

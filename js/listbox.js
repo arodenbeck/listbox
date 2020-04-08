@@ -5,7 +5,7 @@
 /**
  * @namespace aria
  */
-import * as ariaToolbar from '/js/toolbar.js';
+import { ariaToolbar } from '/js/toolbar.js';
 var aria = ariaToolbar.aria || {};
 /**
  * @constructor
