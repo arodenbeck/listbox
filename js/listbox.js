@@ -6,7 +6,7 @@
  * @namespace aria
  */
 import { ariaToolbar } from '/js/toolbar.js';
-var aria = ariaToolbar.aria || {};
+var aria = ariaToolbar || {};
 /**
  * @constructor
  *
@@ -673,7 +673,7 @@ class RankingListbox extends HTMLElement {
   }  // End constructor
   connectedCallback() {
     var listbox = new aria.Listbox(this.querySelector('[role="listbox"]'));
-    //var toolbarButtons = new aria.Toolbar(this.querySelector('[role="toolbar"]'));
+    var toolbarButtons = new aria.Toolbar(this.querySelector('[role="toolbar"]'));
     var upButton = this.querySelector('[id="ex1-up"]');
     var downButton = this.querySelector('[id="ex1-down"]');
     var testItems = [

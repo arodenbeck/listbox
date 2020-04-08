@@ -6,7 +6,7 @@
  * @namespace aria
  */
 import { ariaUtils } from '/js/utils.js';
-var aria = ariaUtils.aria || {};
+var aria = ariaUtils || {};
 
 /**
  * @constructor
