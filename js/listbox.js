@@ -19,13 +19,15 @@ var aria = ariaToolbar || {};
 aria.Listbox = function (listboxNode) {
   this.listboxNode = listboxNode;
   this.activeDescendant = this.listboxNode.getAttribute('aria-activedescendant');
-  this.multiselectable = this.listboxNode.hasAttribute('aria-multiselectable');
+  //this.multiselectable = this.listboxNode.hasAttribute('aria-multiselectable');
+  this.multiselectable = true;
   this.moveUpDownEnabled = false;
   this.siblingList = null;
   this.upButton = null;
   this.downButton = null;
   this.moveButton = null;
   this.keysSoFar = '';
+  this.selectedItems = {};
   this.handleFocusChange = function () {};
   this.handleItemChange = function (event, items) {};
   this.registerEvents();
@@ -175,7 +177,7 @@ aria.Listbox.prototype.checkKeyPress = function (evt) {
 
       var nextUnselected = nextItem.nextElementSibling;
       while (nextUnselected) {
-        if (nextUnselected.getAttribute('aria-selected') != 'true') {
+        if (nextUnselected.getAttribute('aria-checked') != 'true') {
           break;
         }
         nextUnselected = nextUnselected.nextElementSibling;
@@ -183,7 +185,7 @@ aria.Listbox.prototype.checkKeyPress = function (evt) {
       if (!nextUnselected) {
         nextUnselected = nextItem.previousElementSibling;
         while (nextUnselected) {
-          if (nextUnselected.getAttribute('aria-selected') != 'true') {
+          if (nextUnselected.getAttribute('aria-checked') != 'true') {
             break;
           }
           nextUnselected = nextUnselected.previousElementSibling;
@@ -305,7 +307,7 @@ aria.Listbox.prototype.checkClickItem = function (evt) {
 
 /**
  * @desc
- *  Toggle the aria-selected value
+ *  Toggle the aria-checked value
  *
  * @param element
  *  The element to select
@@ -313,16 +315,12 @@ aria.Listbox.prototype.checkClickItem = function (evt) {
 aria.Listbox.prototype.toggleSelectItem = function (element) {
   if (this.multiselectable) {
     element.setAttribute(
-      'aria-selected',
-      element.getAttribute('aria-selected') === 'true' ? 'false' : 'true'
-      );
-    element.setAttribute(
         'aria-checked',
         element.getAttribute('aria-checked') === 'true' ? 'false' : 'true'
     );
 
     if (this.moveButton) {
-      if (this.listboxNode.querySelector('[aria-selected="true"]')) {
+      if (this.listboxNode.querySelector('[aria-checked="true"]')) {
         this.moveButton.setAttribute('aria-disabled', 'false');
       }
       else {
@@ -344,7 +342,7 @@ aria.Listbox.prototype.defocusItem = function (element) {
     return;
   }
   if (!this.multiselectable) {
-    element.removeAttribute('aria-selected');
+    element.removeAttribute('aria-checked');
   }
   element.classList.remove('focused');
 };
@@ -359,7 +357,7 @@ aria.Listbox.prototype.defocusItem = function (element) {
 aria.Listbox.prototype.focusItem = function (element) {
   this.defocusItem(document.getElementById(this.activeDescendant));
   if (!this.multiselectable) {
-    element.setAttribute('aria-selected', 'true');
+    element.setAttribute('aria-checked', 'true');
   }
   element.classList.add('focused');
   this.listboxNode.setAttribute('aria-activedescendant', element.id);
@@ -473,7 +471,6 @@ aria.Listbox.prototype.createListItems = function (items) {
     listItem.setAttribute('id', uniqueId);
     listItem.setAttribute('role', 'option');
     listItem.setAttribute('aria-checked', 'true');
-    listItem.setAttribute('aria-selected', 'true');
     listItems.push(listItem);
   }).bind(this));
   this.addItems(listItems);
@@ -482,7 +479,7 @@ aria.Listbox.prototype.createListItems = function (items) {
 /**
  * @desc
  *  Remove all of the selected items from the listbox; Removes the focused items
- *  in a single select listbox and the items with aria-selected in a multi
+ *  in a single select listbox and the items with aria-checked in a multi
  *  select listbox.
  *
  * @returns items
@@ -491,13 +488,7 @@ aria.Listbox.prototype.createListItems = function (items) {
 aria.Listbox.prototype.deleteItems = function () {
   var itemsToDelete;
 
-  if (this.multiselectable) {
-    itemsToDelete = this.listboxNode.querySelectorAll('[aria-selected="true"]');
-  }
-  else if (this.activeDescendant) {
-    itemsToDelete = [ document.getElementById(this.activeDescendant) ];
-  }
-
+  itemsToDelete = this.findSelectedItems();
   if (!itemsToDelete || !itemsToDelete.length) {
     return [];
   }
@@ -515,6 +506,17 @@ aria.Listbox.prototype.deleteItems = function () {
   return itemsToDelete;
 };
 
+aria.Listbox.prototype.findSelectedItems = function() {
+  var itemsToDelete;
+  if (this.multiselectable) {
+    itemsToDelete = this.listboxNode.querySelectorAll('[aria-checked="true"]');
+  }
+  else if (this.activeDescendant) {
+    itemsToDelete = [ document.getElementById(this.activeDescendant) ];
+  }
+  return itemsToDelete;
+};  // End findSelectedItems method
+
 aria.Listbox.prototype.clearActiveDescendant = function () {
   this.activeDescendant = null;
   this.listboxNode.setAttribute('aria-activedescendant', null);
@@ -525,6 +527,16 @@ aria.Listbox.prototype.clearActiveDescendant = function () {
 
   this.checkUpDownButtons();
 };
+
+aria.Listbox.prototype.getSelectedItems = function() {
+  var itemsToDelete;
+  this.selectedItems = {};
+  itemsToDelete = this.findSelectedItems();
+  itemsToDelete.forEach((function (item) {
+    this.selectedItems.push(item.innerText);
+  }).bind(this));
+  return this.selectedItems;
+};  // End getSelectedItems method
 
 /**
  * @desc
@@ -623,6 +635,9 @@ aria.Listbox.prototype.setHandleItemChange = function (handlerFn) {
 aria.Listbox.prototype.setHandleFocusChange = function (focusChangeHandler) {
   this.handleFocusChange = focusChangeHandler;
 };
+var link = document.querySelector('link[rel="import"]');
+var listboxTemplate = link.import.querySelector('template');
+/*** 
 var listboxTemplate = document.createElement('template');
 listboxTemplate.innerHTML = `<h1>Rank these options</h1>
   <p>
@@ -634,7 +649,6 @@ listboxTemplate.innerHTML = `<h1>Rank these options</h1>
         Available Priorities
       </span>
       <ul id="available-priorities"
-        aria-multiselectable="true"
         tabindex="0"
         role="listbox"
         aria-labelledby="available-priorities-l">
@@ -666,6 +680,7 @@ listboxTemplate.innerHTML = `<h1>Rank these options</h1>
       <span aria-live="polite" id="ss_live_region"></span>
     </div>
   </div>`;
+***/
 class RankingListbox extends HTMLElement {
   constructor() {
     super();
