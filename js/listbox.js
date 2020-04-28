@@ -461,6 +461,7 @@ aria.Listbox.prototype.createListItems = function (items) {
   if (!items || !items.length) {
     return false;
   }
+  this.shuffleArray(items);
 
   var counter = 0;
   items.forEach((function (item) {
@@ -475,6 +476,17 @@ aria.Listbox.prototype.createListItems = function (items) {
   }).bind(this));
   this.addItems(listItems);
 };  // End createListItems methods
+
+aria.Listbox.prototype.shuffleArray = function(inputArray) {
+  var currentIndex = inputArray.length, temporaryValue, randomIndex;
+  while(0 !== currentIndex) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    temporaryValue = inputArray[currentIndex];
+    inputArray[currentIndex] = inputArray[randomIndex];
+    inputArray[randomIndex] = temporaryValue;
+  }  // End while currentIndex is not 0
+}  // End shuffleArray function
 
 /**
  * @desc
