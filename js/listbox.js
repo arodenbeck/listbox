@@ -650,7 +650,7 @@ aria.Listbox.prototype.setHandleFocusChange = function (focusChangeHandler) {
 //var link = document.querySelector('link[rel="import"]');
 //var listboxTemplate = link.import.querySelector('template');
 var xhr = new XMLHttpRequest(); 
-xhr.open('GET', '/listbox.html');
+xhr.open('GET', '/listbox.html', false);
 xhr.send();
 var listboxTemplate = new DOMParser().parseFromString(xhr.responseText, 'text/html')
  .querySelector('template');
