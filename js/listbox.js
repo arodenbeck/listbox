@@ -647,52 +647,13 @@ aria.Listbox.prototype.setHandleItemChange = function (handlerFn) {
 aria.Listbox.prototype.setHandleFocusChange = function (focusChangeHandler) {
   this.handleFocusChange = focusChangeHandler;
 };
-var link = document.querySelector('link[rel="import"]');
-var listboxTemplate = link.import.querySelector('template');
-/*** 
-var listboxTemplate = document.createElement('template');
-listboxTemplate.innerHTML = `<h1>Rank these options</h1>
-  <p>
-    Rank objectives where you feel the NBBA should focus it's efforts. Select up to 6 objectives, then move the priority items up or down to indicate what you think is most important.
-  </p>
-  <div class="listbox-area">
-    <div class="left-area">
-      <span id="available-priorities-l" class="listbox-label">
-        Available Priorities
-      </span>
-      <ul id="available-priorities"
-        tabindex="0"
-        role="listbox"
-        aria-labelledby="available-priorities-l">
-      </ul>
-      <div role="toolbar"
-         aria-label="Actions"
-         id="toolbar-buttons"
-         aria-orientation="horizontal"
-         class="toolbar">
-        <button type="button"
-              id="ex1-up"
-              class="toolbar-item selected"
-              aria-keyshortcuts="Control+ArrowUp"
-              aria-disabled="true">
-          Up
-        </button>
-        <button type="button"
-              id="ex1-down"
-              class="toolbar-item"
-              tabindex="-1"
-              aria-keyshortcuts="Control+ArrowDown"
-              aria-disabled="true">
-          Down
-        </button>
-      </div>
-    </div>
-    <div class="offscreen">
-      Last change:
-      <span aria-live="polite" id="ss_live_region"></span>
-    </div>
-  </div>`;
-***/
+//var link = document.querySelector('link[rel="import"]');
+//var listboxTemplate = link.import.querySelector('template');
+var xhr = new XMLHttpRequest(); 
+xhr.open('GET', '/listbox.html');
+xhr.send();
+var listboxTemplate = new DOMParser().parseFromString(xhr.responseText, 'text/html')
+ .querySelector('template');
 class RankingListbox extends HTMLElement {
   constructor() {
     super();
