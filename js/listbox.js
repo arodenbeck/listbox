@@ -649,15 +649,12 @@ aria.Listbox.prototype.setHandleFocusChange = function (focusChangeHandler) {
 };
 //var link = document.querySelector('link[rel="import"]');
 //var listboxTemplate = link.import.querySelector('template');
-var xhr = new XMLHttpRequest(); 
-xhr.open('GET', '/listbox.html', false);
-xhr.send();
-var listboxTemplate = new DOMParser().parseFromString(xhr.responseText, 'text/html')
- .querySelector('template');
 class RankingListbox extends HTMLElement {
   constructor() {
     super();
+    var listBoxTemplate = this.getTemplateFromFile('/listbox.html');
     this.appendChild(listboxTemplate.content.cloneNode(true));
+    window.customElements.define('ranking-listbox', RankingListbox);
   }  // End constructor
   connectedCallback() {
     var listbox = new aria.Listbox(this.querySelector('[role="listbox"]'));
@@ -682,5 +679,12 @@ class RankingListbox extends HTMLElement {
     listbox.createListItems(testItems);
     listbox.enableMoveUpDown(upButton, downButton);
   }  // End connectedCallback method
+  getTemplateFromFile(fileName) {
+    var xhr = new XMLHttpRequest(); 
+    xhr.open('GET', filename, false);
+    xhr.send();
+    var listboxTemplate = new DOMParser().parseFromString(xhr.responseText, 'text/html')
+     .querySelector('template');
+    return listboxTemplate;
+  }  // End getTemplateFromFile function
 }  // End rankingListbox class
-window.customElements.define('ranking-listbox', RankingListbox);
