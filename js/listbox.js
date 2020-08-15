@@ -652,7 +652,10 @@ aria.Listbox.prototype.setHandleFocusChange = function (focusChangeHandler) {
 class RankingListbox extends HTMLElement {
   constructor() {
     super();
-    var listBoxTemplate = this.getTemplateFromFile('/listbox.html');
+    var listboxTemplate = this.getTemplateFromFile('/listbox.html');
+    if(this.getAttribute('variant') === 'dual') {
+      listboxTemplate = this.getTemplateFromFile('/dualListbox.html');
+    }  // End if variant is dueling
     this.appendChild(listboxTemplate.content.cloneNode(true));
     window.customElements.define('ranking-listbox', RankingListbox);
   }  // End constructor
